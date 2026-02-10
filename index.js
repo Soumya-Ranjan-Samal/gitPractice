@@ -2,6 +2,7 @@ import express from "express";
 
 const app = express();
 
+
 app.get("/show/sum/:a/:b", (req,res)=>{
     res.send(Number(req.params.a) + Number(req.params.b));
 });
@@ -17,6 +18,7 @@ app.get("/hello", (req,res)=>{
 });
 
 app.get("/", (req, res)=>{
+    console.log("Hello this line got added in the default route");
     res.send("Ok");
 });
 
