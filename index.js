@@ -9,6 +9,13 @@ app.get("/show/sum/:a/:b", (req,res)=>{
 });
 
 
+
+app.get("/show/:name", (req,res)=>{
+    let name = req.params.name;
+    console.log(name);
+    res.send(name);
+});
+
 app.get("/hello", (req,res)=>{
     res.send('world');
 });
