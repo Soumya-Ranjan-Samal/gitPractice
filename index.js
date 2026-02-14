@@ -25,6 +25,11 @@ app.get("/show/sum/:a/:b", apiReqLimitUser, (req,res)=>{
     res.send(Number(a) + Number(b));
 });
 
+app.get('/show/:name/:age', (req,res)=>{
+    console.log(`${req.params.name}' is ${req.params.age}  years old.`);
+    res.send("Printed the details");
+});
+
 // new comment line
 
 app.get("/show/:name", apiReqLimitUser, (req,res)=>{
