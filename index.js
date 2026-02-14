@@ -1,7 +1,16 @@
 import express from "express";
+import {rateLimit} from "express-rate-limit";
 
 const app = express();
+const apiReqLimitUser = rateLimit({
+    windowMs: 1000 * 60 * 5, // five minute
+    limit: 3,
+    message: "Too many request",
+    standardHeaders : true,
+    legacyHeaders: false,
+});
 
+app.use(apiReqLimit);
 
 app.get("/show/sum/:a/:b", (req,res)=>{
     let {a = 0,b = 0} = req.params;
