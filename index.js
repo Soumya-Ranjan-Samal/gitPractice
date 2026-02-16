@@ -1,5 +1,7 @@
 import express from "express";
 import {rateLimit} from "express-rate-limit";
+import { emailQueue } from "./queue/mailQueue.js";
+import { sendMail } from "./utils/sendMail.js";
 
 const app = express();
 const apiReqLimitUser = rateLimit({
@@ -19,6 +21,29 @@ const apiReqLimitAdmin = rateLimit({
 });
 
 // app.use(apiReqLimit);
+app.use(express.json());
+
+
+app.post('/sendemail', apiReqLimitAdmin, async (req,res)=>{
+    let {email, subject, body} = req.body;
+    if(!email || !subject || !body){
+        res.status(400).json({
+            message: 'Invalid Inputs!',
+        });
+    }
+    emailQueue.add('sendEmail', {
+        email,
+        subject,
+        body
+    }, {
+        removeOnComplete : true,
+        removeOnFail: false,
+    });
+    // await sendMail(email, subject,body);
+    res.status(201).json({
+        message: `Email is sent to ${email} regarding ${subject}`,
+    });
+});
 
 app.get("/show/sum/:a/:b", apiReqLimitUser, (req,res)=>{
     let {a = 0,b = 0} = req.params;
